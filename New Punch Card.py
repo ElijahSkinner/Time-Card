@@ -1,8 +1,39 @@
+import gspread
+import pandas as pd
+from oauth2client.service_account import ServiceAccountCredentials
 from tkinter import *
 from tkinter import messagebox
 import tkinter.font as tkFont
 from datetime import datetime
 from time import strftime
+################################################################################
+# define the scope
+scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
+
+# add credentials to the account
+creds = ServiceAccountCredentials.from_json_keyfile_name('C:/Users/Elijah/Downloads/time-card-335501-6f5869e41d19.json', scope)
+
+# authorize the clientsheet 
+client = gspread.authorize(creds)
+
+# get the instance of the Spreadsheet
+sheet = client.open('Punch Card Systems')
+
+# get the first sheet of the Spreadsheet
+sheet_instance = sheet.get_worksheet(0)
+
+# get the total number of columns
+sheet_instance.col_count
+
+# get the value at the specific cell
+sheet_instance.cell(col=3,row=2)
+
+# add a sheet with 20 rows and 2 columns
+#sheet.add_worksheet(rows=20,cols=2,title=p1.firstName + p1.lastName)
+
+# get the instance of the second sheet
+sheet_runs = sheet.get_worksheet(1)
+
 ############################################################################################
 def timeStamp():
     now = datetime.now()
@@ -156,6 +187,7 @@ class UpdateInfo(Frame):
         self.lastN.grid(row=2, column=1)
         self.email.grid(row=3, column=1)
         self.wage.grid(row=4, column=1)
+        
         self.listbox.grid(row=1, column=3, rowspan=4)
 
         submit = Button(userFrame, text="Submit",
@@ -191,7 +223,8 @@ if __name__ == "__main__":
     app.mainloop()
 ###########################################################################################
 #p1.getInfo()
-
+# add a sheet with 20 rows and 2 columns
+sheet.add_worksheet(rows=20,cols=2,title=p1.firstName + p1.lastName)
 
 
 
